@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 from typing import List
 from dotenv import load_dotenv
 import os.path
@@ -21,7 +21,7 @@ class GenerateImageRequest(BaseModel):
 
 
 class GenerateImageResponse(BaseModel):
-    upscaled_images: List[str]
+    upscaled_images: List[str] = Field(default="upscaled-images")
 
 
 app = FastAPI()
