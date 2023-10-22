@@ -21,8 +21,9 @@ class GenerateImageRequest(BaseModel):
 
 
 class GenerateImageResponse(BaseModel):
-    upscaled_images: List[str] = Field(default="upscaled-images")
-
+    upscaled_images: List[str] = Field(alias="upscaled-images")
+    class Config:
+        populate_by_name = True
 
 app = FastAPI()
 
