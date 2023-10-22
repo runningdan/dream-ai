@@ -36,21 +36,21 @@ export default function Component() {
       productType: "",
       attributes: [],
     },
-}
+  }
 
-const handlePresetChange = (selectedPreset: keyof typeof presets) => {
+  const handlePresetChange = (selectedPreset: keyof typeof presets) => {
     if (presets[selectedPreset]) {
-        setPreset(selectedPreset);
-        setProductType(presets[selectedPreset].productType);
-        setSelected(presets[selectedPreset].attributes);
+      setPreset(selectedPreset);
+      setProductType(presets[selectedPreset].productType);
+      setSelected(presets[selectedPreset].attributes);
     }
-};  
+  };
 
-const [images, setImages] = useState<string[]>([]); // New state to hold the image URLs
+  const [images, setImages] = useState<string[]>([]); // New state to hold the image URLs
 
   const handleSubmit = async () => {
     try {
-      const response = await fetch('http://127.0.0.1:8000/api/v1/generate-image', {  
+      const response = await fetch('http://127.0.0.1:8000/api/v1/generate-image', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -71,7 +71,7 @@ const [images, setImages] = useState<string[]>([]); // New state to hold the ima
       console.error('Error:', error);
     }
   };
-  
+
 
 
 
@@ -79,25 +79,25 @@ const [images, setImages] = useState<string[]>([]); // New state to hold the ima
     <div className="flex flex-col h-screen w-screen bg-white dark:bg-zinc-900">
       <nav className="flex items-center justify-between px-6 py-4 border-b border-zinc-200 dark:border-zinc-800">
         <div className="flex items-center space-x-4">
-        <svg 
-            xmlns="http://www.w3.org/2000/svg" 
-            width="24" 
-            height="24" 
-            viewBox="0 0 24 24" 
-            fill="none" 
-            stroke="currentColor" 
-            stroke-width="2" 
-            stroke-linecap="round" 
-            stroke-linejoin="round" 
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
             class="lucide lucide-cloud-moon"
-        >
-        <path 
-            d="M13 16a3 3 0 1 1 0 6H7a5 5 0 1 1 4.9-6Z"
-        />
-        <path 
-        d="M10.1 9A6 6 0 0 1 16 4a4.24 4.24 0 0 0 6 6 6 6 0 0 1-3 5.197"
-       />
-      </svg>
+          >
+            <path
+              d="M13 16a3 3 0 1 1 0 6H7a5 5 0 1 1 4.9-6Z"
+            />
+            <path
+              d="M10.1 9A6 6 0 0 1 16 4a4.24 4.24 0 0 0 6 6 6 6 0 0 1-3 5.197"
+            />
+          </svg>
 
           <h1 className="text-xl font-semibold text-zinc-900 dark:text-zinc-50">Dream AI</h1>
         </div>
@@ -124,79 +124,80 @@ const [images, setImages] = useState<string[]>([]); // New state to hold the ima
       </nav>
       <div className="flex flex-1 overflow-hidden">
         <aside className="w-64 border-r border-zinc-200 dark:border-zinc-800 overflow-auto">
-        <nav className="flex flex-col gap-4 p-4"><h2 className="text-lg font-semibold text-zinc-500 dark:text-zinc-400">Preset</h2>
-        <Select onValueChange={(presetValue) => handlePresetChange(presetValue)}>
-    <SelectTrigger>
-        <SelectValue placeholder={preset} />
-    </SelectTrigger>
-    <SelectContent>
-        {Object.keys(presets).map((presetName) => (
-            <SelectItem
-                key={presetName}
-                value={presetName}
-            >
-                {presetName}
-            </SelectItem>
-        ))}
-    </SelectContent>
-</Select>
-  
-    <h2 className="text-lg font-semibold text-zinc-500 dark:text-zinc-400">Product Type</h2>
-    <input
-      value={productType} // Reflect the productType value
-      onChange={(e) => setProductType(e.target.value)} // Allow user to modify the input
-      placeholder="Enter Product Type"
-      className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0"
-    />
+          <nav className="flex flex-col gap-4 p-4"><h2 className="text-lg font-semibold text-zinc-500 dark:text-zinc-400">Preset</h2>
+            <Select onValueChange={(presetValue) => handlePresetChange(presetValue)}>
+              <SelectTrigger>
+                <SelectValue placeholder={preset} />
+              </SelectTrigger>
+              <SelectContent>
+                {Object.keys(presets).map((presetName) => (
+                  <SelectItem
+                    key={presetName}
+                    value={presetName}
+                  >
+                    {presetName}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
 
-    <div> 
-      <h2 className="text-lg font-semibold text-zinc-500 dark:text-zinc-400">Product Attributes</h2>
-      <div> 
-        <TagsInput 
-          value={selected} 
-          onChange={setSelected}
-          name="tags"
-          placeHolder="Attributes"
-          className="mb-4 mt-4" 
-        />
-        <Button className="mt-4 w-full" onClick={handleSubmit}>Generate</Button> {/* Added onClick handler */}
-      </div> 
-    </div>
-    </nav>
+            <h2 className="text-lg font-semibold text-zinc-500 dark:text-zinc-400">Product Type</h2>
+            <input
+              value={productType} // Reflect the productType value
+              onChange={(e) => setProductType(e.target.value)} // Allow user to modify the input
+              placeholder="Enter Product Type"
+              className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0"
+            />
+
+            <div>
+              <h2 className="text-lg font-semibold text-zinc-500 dark:text-zinc-400">Product Attributes</h2>
+              <div className="product-label-box">
+                <TagsInput
+                  value={selected}
+                  onChange={setSelected}
+                  name="tags"
+                  placeHolder="Attributes"
+                  className="mb-4 mt-4"
+                />
+                <Button className="mt-4 w-full" onClick={handleSubmit}>Generate</Button> {/* Added onClick handler */}
+              </div>
+            </div>
+          </nav>
 
         </aside>
         <main className="flex-1 overflow-auto p-4">
           {/* Add this section to display the images */}
           {images.length > 0 && (
-  <div className="grid grid-cols-2 gap-4">
-    {images.map((image, index) => (
-    <div key={index} className="flex flex-col items-start">
-        <img
-            src={image}
-            alt={`Upscaled ${index + 1}`}
-            className="rounded-lg mb-2"
-        />
-       <a
-    href={image}
-    download={`Upscaled_${index + 1}.png`}
-    className="flex items-center justify-between px-4 py-2 bg-white outline text-black rounded-lg border border-gray-300"
->
-    <span className="mr-2">Download</span> {/* Added a span around the text and added mr-2 for right margin */}
-    <Download className="w-5 h-5" /> {/* Adjusted the size using w-5 and h-5 */}
-</a>
+            <div className="grid grid-cols-2 gap-4">
+              {images.map((image, index) => (
+                <div key={index} className="flex flex-col items-start">
+                  <img
+                    src={image}
+                    alt={`Upscaled ${index + 1}`}
+                    className="rounded-lg mb-2"
+                  />
+                  <a
+                    target="_blank"
+                    href={image}
+                    download={`Upscaled_${index + 1}.png`}
+                    className="flex items-center justify-between px-4 py-2 bg-white text-black rounded-lg border border-gray-800"
+                  >
+                    <span className="text-sm mr-2">Download</span> {/* Added a span around the text and added mr-2 for right margin */}
+                    <Download className="w-4 h-5" /> {/* Adjusted the size using w-5 and h-5 */}
+                  </a>
 
-    </div>
-))}
+                </div>
+              ))}
 
 
 
-  </div>
-)}
+            </div>
+          )}
         </main>
       </div>
       <footer className="flex items-center justify-between px-6 py-4 border-t border-zinc-200 dark:border-zinc-800">
         <p className="text-sm text-zinc-500 dark:text-zinc-400">Made with ❤️ by Dan, Sydney, & Abdullah</p>
-        
+
       </footer>
     </div>
   )
