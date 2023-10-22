@@ -1,42 +1,70 @@
-"use client"
+"use client";
 
-import { Button } from "@/components/ui/button"
-import { input } from "@/components/ui/input"
-import { SelectValue, SelectTrigger, SelectItem, SelectContent, Select } from "@/components/ui/select"
-import Link from "next/link"
-import { TagsInput } from "react-tag-input-component"
-import React, { useState } from "react"
-import { Download } from "lucide-react"
+import { Button } from "@/components/ui/button";
+import { input } from "@/components/ui/input";
+import {
+  SelectValue,
+  SelectTrigger,
+  SelectItem,
+  SelectContent,
+  Select,
+} from "@/components/ui/select";
+import Link from "next/link";
+import { TagsInput } from "react-tag-input-component";
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
+import React, { useState } from "react";
+import { Download } from "lucide-react";
 
 type PresetType = {
   productType: string;
   attributes: string[];
-}
-
+};
 
 export default function Component() {
-  const [selected, setSelected] = useState(["sleek", "black", "39mm case", "stainless", "luxury", "alligator leather strap"]);
+  const [selected, setSelected] = useState([
+    "sleek",
+    "black",
+    "39mm case",
+    "stainless",
+    "luxury",
+    "alligator leather strap",
+  ]);
   const [productType, setProductType] = useState("watch");
   const [preset, setPreset] = useState("Sleek black watch");
+  const [isLoadingImages, setIsLoadingImages] = useState(false);
 
   const presets: Record<string, PresetType> = {
     "Sleek black watch": {
       productType: "Watch",
-      attributes: ["sleek", "black", "39mm case", "stainless", "luxury", "alligator leather strap"],
+      attributes: [
+        "sleek",
+        "black",
+        "39mm case",
+        "stainless",
+        "luxury",
+        "alligator leather strap",
+      ],
     },
     "Flashy headphones": {
       productType: "Headphones",
-      attributes: ["white", "headphones", "gold accent", "round ear cups", "leather cushions"],
+      attributes: [
+        "white",
+        "headphones",
+        "gold accent",
+        "round ear cups",
+        "leather cushions",
+      ],
     },
     "Diamond necklace": {
       productType: "Necklace",
       attributes: ["diamond", "gold", "accent", "chain necklace"],
     },
-    "Custom": {
+    Custom: {
       productType: "",
       attributes: [],
     },
-  }
+  };
 
   const handlePresetChange = (selectedPreset: keyof typeof presets) => {
     if (presets[selectedPreset]) {
@@ -50,30 +78,34 @@ export default function Component() {
 
   const handleSubmit = async () => {
     try {
-      const response = await fetch('http://127.0.0.1:8000/api/v1/generate-image', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          attributes: selected,
-          product: productType,
-        }),
-      });
+      setIsLoadingImages(true);
+
+      const response = await fetch(
+        "http://127.0.0.1:8000/api/v1/generate-image",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            attributes: selected,
+            product: productType,
+          }),
+        }
+      );
 
       if (!response.ok) {
-        throw new Error('API request failed');
+        throw new Error("API request failed");
       }
 
       const data = await response.json();
-      setImages(data['upscaled-images']);
+      setImages(data["upscaled-images"]);
     } catch (error) {
-      console.error('Error:', error);
+      console.error("Error:", error);
+    } finally {
+      setIsLoadingImages(false); // Set loading to false when done (either on success or failure)
     }
   };
-
-
-
 
   return (
     <div className="flex flex-col h-screen w-screen bg-white dark:bg-zinc-900">
@@ -91,15 +123,13 @@ export default function Component() {
             stroke-linejoin="round"
             class="lucide lucide-cloud-moon"
           >
-            <path
-              d="M13 16a3 3 0 1 1 0 6H7a5 5 0 1 1 4.9-6Z"
-            />
-            <path
-              d="M10.1 9A6 6 0 0 1 16 4a4.24 4.24 0 0 0 6 6 6 6 0 0 1-3 5.197"
-            />
+            <path d="M13 16a3 3 0 1 1 0 6H7a5 5 0 1 1 4.9-6Z" />
+            <path d="M10.1 9A6 6 0 0 1 16 4a4.24 4.24 0 0 0 6 6 6 6 0 0 1-3 5.197" />
           </svg>
 
-          <h1 className="text-xl font-semibold text-zinc-900 dark:text-zinc-50">Dream AI</h1>
+          <h1 className="text-xl font-semibold text-zinc-900 dark:text-zinc-50">
+            Dream AI
+          </h1>
         </div>
         <div className="flex items-center space-x-4">
           <Button size="icon" variant="ghost">
@@ -124,24 +154,28 @@ export default function Component() {
       </nav>
       <div className="flex flex-1 overflow-hidden">
         <aside className="w-64 border-r border-zinc-200 dark:border-zinc-800 overflow-auto">
-          <nav className="flex flex-col gap-4 p-4"><h2 className="text-lg font-semibold text-zinc-500 dark:text-zinc-400">Preset</h2>
-            <Select onValueChange={(presetValue) => handlePresetChange(presetValue)}>
+          <nav className="flex flex-col gap-4 p-4">
+            <h2 className="text-lg font-semibold text-zinc-500 dark:text-zinc-400">
+              Preset
+            </h2>
+            <Select
+              onValueChange={(presetValue) => handlePresetChange(presetValue)}
+            >
               <SelectTrigger>
                 <SelectValue placeholder={preset} />
               </SelectTrigger>
               <SelectContent>
                 {Object.keys(presets).map((presetName) => (
-                  <SelectItem
-                    key={presetName}
-                    value={presetName}
-                  >
+                  <SelectItem key={presetName} value={presetName}>
                     {presetName}
                   </SelectItem>
                 ))}
               </SelectContent>
             </Select>
 
-            <h2 className="text-lg font-semibold text-zinc-500 dark:text-zinc-400">Product Type</h2>
+            <h2 className="text-lg font-semibold text-zinc-500 dark:text-zinc-400">
+              Product Type
+            </h2>
             <input
               value={productType} // Reflect the productType value
               onChange={(e) => setProductType(e.target.value)} // Allow user to modify the input
@@ -150,7 +184,9 @@ export default function Component() {
             />
 
             <div>
-              <h2 className="text-lg font-semibold text-zinc-500 dark:text-zinc-400">Product Attributes</h2>
+              <h2 className="text-lg font-semibold text-zinc-500 dark:text-zinc-400">
+                Product Attributes
+              </h2>
               <div className="product-label-box">
                 <TagsInput
                   value={selected}
@@ -159,15 +195,23 @@ export default function Component() {
                   placeHolder="Attributes"
                   className="mb-4 mt-4"
                 />
-                <Button className="mt-4 w-full" onClick={handleSubmit}>Generate</Button> {/* Added onClick handler */}
+                <Button className="mt-4 w-full" onClick={handleSubmit}>
+                  Generate
+                </Button>{" "}
+                {/* Added onClick handler */}
               </div>
             </div>
           </nav>
-
         </aside>
         <main className="flex-1 overflow-auto p-4">
+          {" "}
           {/* Add this section to display the images */}
-          {images.length > 0 && (
+          {isLoadingImages ? (
+            <div className="grid grid-cols-2 gap-4">
+              <Skeleton height={400} className="my-2" count={2} />
+              <Skeleton height={400} className="my-2" count={2} />
+            </div>
+          ) : images.length > 0 ? (
             <div className="grid grid-cols-2 gap-4">
               {images.map((image, index) => (
                 <div key={index} className="flex flex-col items-start">
@@ -177,21 +221,19 @@ export default function Component() {
                     className="rounded-lg mb-2"
                   />
                   <a
-                    target="_blank"
                     href={image}
+                    target="_blank"
                     download={`Upscaled_${index + 1}.png`}
                     className="flex items-center justify-between px-4 py-2 bg-white text-black rounded-lg border border-gray-800"
                   >
                     <span className="text-sm mr-2">Download</span> {/* Added a span around the text and added mr-2 for right margin */}
                     <Download className="w-4 h-5" /> {/* Adjusted the size using w-5 and h-5 */}
                   </a>
-
                 </div>
               ))}
-
-
-
             </div>
+          ) : (
+            <p></p>
           )}
         </main>
       </div>
@@ -200,5 +242,5 @@ export default function Component() {
 
       </footer>
     </div>
-  )
+  );
 }
