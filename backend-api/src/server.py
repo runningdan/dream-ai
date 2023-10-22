@@ -4,7 +4,7 @@ from typing import List
 from dotenv import load_dotenv
 import os.path
 import imagegenerator
-
+from fastapi.middleware.cors import CORSMiddleware
 
 if os.path.exists("../.env.dev"):
     load_dotenv("../.env.dev")
@@ -26,6 +26,13 @@ class GenerateImageResponse(BaseModel):
 
 app = FastAPI()
 
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 @app.post("/api/v1/generate-image")
 async def generate_image(
