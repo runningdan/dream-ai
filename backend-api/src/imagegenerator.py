@@ -40,7 +40,7 @@ class ImageGeneratorAI:
         response = conn.getresponse()
         response_data = json.loads(response.read().decode("utf-8"))
 
-        logger.info("response data: " + response_data)
+        logger.info("response data: " + str(response_data))
 
         image_id = response_data["data"]["id"]
 
@@ -54,7 +54,7 @@ class ImageGeneratorAI:
                 response = connection.getresponse()
                 get_images_response = json.loads(response.read().decode())
 
-                logger.info("get image response data: " + get_images_response)
+                logger.info("get image response data: " + str(get_images_response))
 
                 if get_images_response["data"]["status"] == "completed":
                     return get_images_response["data"]["upscaled_urls"]
