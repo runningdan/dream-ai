@@ -1,0 +1,5 @@
+loguru==0.7.2
+pydantic==2.4.2
+pydantic-core==2.10.1
+fastapi==0.103.2
+python-dotenv==1.0.0
