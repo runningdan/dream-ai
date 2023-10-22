@@ -2,7 +2,7 @@ import http.client
 import json
 import time
 from loguru import logger
-
+from typing import Union
 
 class ImageGenerationException(Exception):
     pass
@@ -83,8 +83,7 @@ class ImageGeneratorAIDryRun(ImageGeneratorAI):
             "https://demo.imagineapi.dev/assets/0e3840fe-5c5f-4dd8-bf38-f34f36e7f4f6/0e3840fe-5c5f-4dd8-bf38-f34f36e7f4f6.png"
         ]
 
-
-def create_image_generator(dry_run, api_key):
+def create_image_generator(dry_run, api_key) -> Union[ImageGeneratorAIDryRun, ImageGeneratorAI]:
     if dry_run == "true":
         return ImageGeneratorAIDryRun(api_key)
     return ImageGeneratorAI(api_key)

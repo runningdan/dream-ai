@@ -15,14 +15,14 @@ type PresetType = {
 
 
 export default function Component() {
-  const [selected, setSelected] = useState(["sleek", "black", "39mm case", "stainless", "luxury", "alligator leather strap"]);
-  const [productType, setProductType] = useState("watch");
-  const [preset, setPreset] = useState("Sleek black watch");
+  const [selected, setSelected] = useState(["luxury", "white dial", "marble pattern", "alligator leather strap"]);
+  const [productType, setProductType] = useState("Watch");
+  const [preset, setPreset] = useState("Sleek blue watch");
 
   const presets: Record<string, PresetType> = {
-    "Sleek black watch": {
+    "Sleek blue watch": {
       productType: "Watch",
-      attributes: ["sleek", "black", "39mm case", "stainless", "luxury", "alligator leather strap"],
+      attributes: ["luxury", "white dial", "marble pattern", "alligator leather strap"],
     },
     "Flashy headphones": {
       productType: "Headphones",
@@ -30,7 +30,7 @@ export default function Component() {
     },
     "Diamond necklace": {
       productType: "Necklace",
-      attributes: ["diamond", "gold", "accent", "chain necklace"],
+      attributes: ["diamond","gold","accent","chain necklace"],
     },
     "Custom": {
       productType: "",
